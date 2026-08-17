@@ -8,7 +8,7 @@
 #   - Nested variable interpolation (${A:-${B}}) requires podman-compose >= 1.6.0
 #
 
-name: supabase
+name: supabase-verai
 
 services:
 
