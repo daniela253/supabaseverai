@@ -483,7 +483,7 @@ services:
       # Changes required for Pooler support
       - ./volumes/db/pooler.sql:/docker-entrypoint-initdb.d/migrations/99-pooler.sql:Z
       # Use named volume to persist pgsodium decryption key between restarts
-      - :/etc/postgresql-custom
+      - db-config:/etc/postgresql-custom
     healthcheck:
       test:
         [
@@ -571,5 +571,3 @@ volumes:
   deno-cache:
   db-data:
   storage-data:
-
-  isolar projeto e volumes de dados
