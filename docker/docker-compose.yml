@@ -54,6 +54,14 @@ services:
       - ./volumes/snippets:/app/snippets:z
       - ./volumes/functions:/app/edge-functions:ro,z
 
+  studio:
+  image: supabase/studio:2026.08.03-sha-022b374
+  restart: unless-stopped
+  networks:
+    default:
+      aliases:
+        - verai-studio
+        
   api-gw:
     image: envoyproxy/envoy:v1.39.0
     restart: unless-stopped
