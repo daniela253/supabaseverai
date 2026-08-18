@@ -35,11 +35,43 @@ import { auditProduct } from "./modules/auditProduct.ts";
 import { estimateImpact } from "./modules/estimateImpact.ts";
 import { persistAnalysisResult } from "./modules/persistAnalysisResult.ts";
 
-function computeStatusGeral(flags: ExecutionFlags, findings: { severidade: string }[], nivelConfianca: string | null): StatusGeral {
-  const algumaFlagAtiva = Object.values(flags).some(Boolean);
-  if (algumaFlagAtiva) return "SEM_BASE";
-  if (findings.some((f) => f.severidade === "alta" || f.severidade === "critica")) return "DIVERGENCIA";
-  if (nivelConfianca === "BAIXA") return "REVISAR";
+function computeStatusGeral(
+  flags: ExecutionFlags,
+  findings: { severidade: string }[],
+  nivelConfianca: string | null
+): StatusGeral {
+
+  // SEM_BASE só quando a própria classificação não conseguiu avançar.
+  if (
+    flags.descricao_insuficiente ||
+    flags.base_ncm_indisponivel ||
+    flags.nenhum_candidato_acima_limiar
+  ) {
+    return "SEM_BASE";
+  }
+
+  // Divergências relevantes têm prioridade sobre revisão.
+  if (
+    findings.some(
+      (f) =>
+        f.severidade?.toLowerCase() === "alta" ||
+        f.severidade?.toLowerCase() === "critica"
+    )
+  ) {
+    return "DIVERGENCIA";
+  }
+
+  // A classificação existe, mas alguma parte complementar
+  // não pôde ser concluída com segurança.
+  if (
+    nivelConfianca === "BAIXA" ||
+    flags.base_tributaria_ausente ||
+    flags.modelo_raciocinio_indisponivel ||
+    flags.dados_xml_insuficientes
+  ) {
+    return "REVISAR";
+  }
+
   return "VALIDADO";
 }
 
