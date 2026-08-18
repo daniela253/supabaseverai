@@ -167,6 +167,14 @@ export async function findNcmCandidates(
     .sort((a, b) => b.score - a.score)
     .slice(0, MAX_CANDIDATOS);
 
+  console.log("DEBUG_FIND_NCM", {
+  descricaoNormalizada,
+  termos,
+  termosBusca,
+  totalEncontradoBanco: data?.length ?? 0,
+  candidatos,
+});
+  
   return {
     candidatos,
     base_ncm_indisponivel: false,
