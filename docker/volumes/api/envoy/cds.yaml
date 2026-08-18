@@ -206,7 +206,7 @@ resources:
             - endpoint:
                 address:
                   socket_address:
-                    address: studio
+                    address: verai-studio
                     port_value: 3000
     health_checks:
       - timeout: 2s
