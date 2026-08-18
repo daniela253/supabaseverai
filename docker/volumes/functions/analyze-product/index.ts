@@ -191,6 +191,11 @@ Deno.serve(async (req: Request) => {
         }
       }
 
+      console.log("DEBUG_STATUS_GERAL", {
+        flags,
+        nivelConfianca: classification?.nivel_confianca ?? null,
+        findings,
+      });
       const statusGeral = computeStatusGeral(flags, findings, classification?.nivel_confianca ?? null);
 
       const { item_id } = await persistAnalysisResult(supabase, {
